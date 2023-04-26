@@ -75,7 +75,7 @@ class MainScreen extends StatelessWidget {
                     mainScreenNotifier.pageIndex = 4;
                   },
                   icon: mainScreenNotifier.pageIndex == 4
-                  ?Ionicons.add
+                  ?Ionicons.person
                   :Ionicons.person_outline
                 ),
               ],
