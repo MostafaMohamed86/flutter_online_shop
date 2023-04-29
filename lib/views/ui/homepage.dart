@@ -1,9 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_online_shop/models/sneaker_model.dart';
+import 'package:flutter_online_shop/services/helper.dart';
 import 'package:flutter_online_shop/views/shared/appstyle.dart';
-import 'package:flutter_online_shop/views/shared/product_card.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-
+import 'package:flutter_online_shop/views/shared/home_widget.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -14,6 +13,32 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late final TabController _tabController =
       TabController(length: 3, vsync: this);
+
+  late Future<List<Sneakers>> _male;
+  late Future<List<Sneakers>> _female;
+  late Future<List<Sneakers>> _kids;
+
+  void getMale() {
+    _male = Helper().getMaleSneakers();
+  }
+
+  void getFemale() {
+    _female = Helper().getFemaleSneakers();
+  }
+
+  void getKids() {
+    _kids = Helper().getKidsSneakers();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getMale();
+    getFemale();
+    getKids();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,14 +48,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           child: Stack(
             children: [
               Container(
-                padding: EdgeInsets.fromLTRB(16, 45, 0, 0),
+                padding: const EdgeInsets.fromLTRB(16, 45, 0, 0),
                 height: MediaQuery.of(context).size.height * 0.4,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage("assets/images/top_image.png"),
                         fit: BoxFit.fill)),
                 child: Container(
-                  padding: EdgeInsets.only(left: 8, bottom: 15),
+                  padding: const EdgeInsets.only(left: 8, bottom: 15),
                   width: MediaQuery.of(context).size.width,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +71,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             42, Colors.white, FontWeight.bold, 1.2),
                       ),
                       TabBar(
-                        padding: EdgeInsets.zero,
+                          padding: EdgeInsets.zero,
                           indicatorSize: TabBarIndicatorSize.label,
                           indicatorColor: Colors.transparent,
                           controller: _tabController,
@@ -72,108 +97,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.265),
+                    top: MediaQuery.of(context).size.height * 0.25),
                 child: Container(
-                  padding: EdgeInsets.only(left: 12),
+                  padding: const EdgeInsets.only(left: 12),
                   child: TabBarView(controller: _tabController, children: [
-                    Column(
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.405,
-                          child: ListView.builder(
-                            itemCount: 6,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return const ProductCard(
-                              price: "\$20.00", 
-                              category: "Men Shoes", 
-                              id: "1", 
-                              name: "Adidas NMD Runner", 
-                              image: "https://d326fntlu7tb1e.cloudfront.net/uploads/710d020f-2da8-4e9e-8cff-0c8f24581488-GV6674.webp");
-                            },
-                          ),
-                        ),
-                        Column(
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(12, 20, 12, 20),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Latest Shoes",
-                                    style: appstyle(
-                                        24, Colors.black, FontWeight.bold),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Show All",
-                                        style: appstyle(
-                                            22, Colors.black, FontWeight.w500),
-                                      ),
-                                      Icon(
-                                        AntDesign.caretright,
-                                        size: 20,
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.13,
-                          child: ListView.builder(
-                            itemCount: 6,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                    decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(16)),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color: Colors.white,
-                                              spreadRadius: 1,
-                                              blurRadius: 0.8,
-                                              offset: Offset(0, 1))
-                                        ]),
-                                    height: MediaQuery.of(context).size.height *
-                                        0.12,
-                                    width: MediaQuery.of(context).size.width *
-                                        0.28,
-                                    child: CachedNetworkImage(
-                                        imageUrl:
-                                            "https://d326fntlu7tb1e.cloudfront.net/uploads/3d2b87c6-6450-4751-be73-7b13b2f7e284-GV9439_a1.webp")),
-                              );
-                            },
-                          ),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.405,
-                          color: Colors.red,
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.405,
-                          color: Colors.blue,
-                        )
-                      ],
-                    ),
+                    HomeWidget(male: _male),
+                    HomeWidget(male: _female),
+                    HomeWidget(male: _kids),
                   ]),
                 ),
               )
@@ -182,3 +112,5 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ));
   }
 }
+
+
