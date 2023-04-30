@@ -3,6 +3,7 @@ import 'package:flutter_online_shop/controllers/mainscreen_provider.dart';
 import 'package:flutter_online_shop/views/shared/bottom_nav_widget.dart';
 import 'package:flutter_online_shop/views/ui/cartpage.dart';
 import 'package:flutter_online_shop/views/ui/homepage.dart';
+import 'package:flutter_online_shop/views/ui/product_by_cart.dart';
 import 'package:flutter_online_shop/views/ui/profile.dart';
 import 'package:flutter_online_shop/views/ui/searchpage.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -12,11 +13,12 @@ class MainScreen extends StatelessWidget {
   MainScreen({super.key});
 
   List<Widget> pageList = [
-    HomePage(),
-    SearchPage(),
-    HomePage(),
-    CartPage(),
-    ProfilePage()
+    const HomePage(),
+    const SearchPage(),
+    const ProductByCart(),
+    const HomePage(),
+    const CartPage(),
+    const ProfilePage()
   ];
 
   @override
@@ -28,11 +30,11 @@ class MainScreen extends StatelessWidget {
           body: pageList[mainScreenNotifier.pageIndex],
           bottomNavigationBar: SafeArea(
               child: Padding(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             child: Container(
-              padding: EdgeInsets.all(12),
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.all(12),
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: const BoxDecoration(
                   color: Colors.black,
                   borderRadius: BorderRadius.all(Radius.circular(16))),
               child: Row(
