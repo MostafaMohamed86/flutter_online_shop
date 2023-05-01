@@ -3,6 +3,7 @@ import 'package:flutter_online_shop/models/sneaker_model.dart';
 import 'package:flutter_online_shop/views/shared/appstyle.dart';
 import 'package:flutter_online_shop/views/shared/new_shoes.dart';
 import 'package:flutter_online_shop/views/shared/product_card.dart';
+import 'package:flutter_online_shop/views/ui/product_by_cart.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
 class HomeWidget extends StatelessWidget {
@@ -59,18 +60,23 @@ class HomeWidget extends StatelessWidget {
                     style: appstyle(
                         24, Colors.black, FontWeight.bold),
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        "Show All",
-                        style: appstyle(
-                            22, Colors.black, FontWeight.w500),
-                      ),
-                      const Icon(
-                        AntDesign.caretright,
-                        size: 20,
-                      )
-                    ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProductByCart(),));
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          "Show All",
+                          style: appstyle(
+                              22, Colors.black, FontWeight.w500),
+                        ),
+                        const Icon(
+                          AntDesign.caretright,
+                          size: 20,
+                        )
+                      ],
+                    ),
                   )
                 ],
               ),

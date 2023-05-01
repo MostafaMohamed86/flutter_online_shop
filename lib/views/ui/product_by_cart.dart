@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_online_shop/models/sneaker_model.dart';
 import 'package:flutter_online_shop/services/helper.dart';
 import 'package:flutter_online_shop/views/shared/appstyle.dart';
+import 'package:flutter_online_shop/views/shared/category_btn.dart';
+import 'package:flutter_online_shop/views/shared/custom_spacer.dart';
+import 'package:flutter_online_shop/views/shared/latest_shoes.dart';
 import 'package:flutter_online_shop/views/shared/stagger_tile.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -43,6 +46,13 @@ class _ProductByCartState extends State<ProductByCart>
     getKids();
   }
 
+  List<String> brand = [
+    "assets/images/adidas.png",
+    "assets/images/gucci.png",
+    "assets/images/jordan.png",
+    "assets/images/nike.png",
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +71,7 @@ class _ProductByCartState extends State<ProductByCart>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(padding: EdgeInsets.fromLTRB(6, 12, 16, 18)),
+                  const Padding(padding: EdgeInsets.fromLTRB(6, 12, 16, 18)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -69,16 +79,16 @@ class _ProductByCartState extends State<ProductByCart>
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: Icon(
+                        child: const Icon(
                           AntDesign.close,
                           color: Colors.white,
                         ),
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pop(context);
+                          filter();
                         },
-                        child: Icon(
+                        child: const Icon(
                           FontAwesome.sliders,
                           color: Colors.white,
                         ),
@@ -114,51 +124,126 @@ class _ProductByCartState extends State<ProductByCart>
                   left: 16,
                   right: 12),
               child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
+                borderRadius: const BorderRadius.all(Radius.circular(16)),
                 child: TabBarView(controller: _tabController, children: [
-                  FutureBuilder<List<Sneakers>>(
-                    future: _male,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return Text("Error ${snapshot.error}");
-                      } else {
-                        final male = snapshot.data;
-                        return StaggeredGridView.countBuilder(
-                          padding: EdgeInsets.zero,
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 20,
-                          mainAxisSpacing: 16,
-                          itemCount: male!.length,
-                          scrollDirection: Axis.vertical,
-                          staggeredTileBuilder: (index) => StaggeredTile.extent(
-                              (index % 2 == 0) ? 1 : 1,
-                              (index % 4 == 1 || index % 4 == 3)
-                                  ? MediaQuery.of(context).size.height * 0.35
-                                  : MediaQuery.of(context).size.height * 0.3),
-                          itemBuilder: (context, index) {
-                            final shoe = snapshot.data![index];
-                            return StaggerTile(
-                              imageUrl: shoe.imageUrl[1],
-                               name: shoe.name, 
-                               price: "\$${shoe.price}");
-                          },
-                        );
-                      }
-                    },
-                  ),
-                  Container(
-                    height: 500,
-                    width: 300,
-                    color: Colors.red,
-                  ),
-                  Container(
-                    height: 500,
-                    width: 300,
-                    color: Colors.blue,
-                  )
+                  LatestShoes(male: _male),
+                  LatestShoes(male: _female),
+                  LatestShoes(male: _kids),
                 ]),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<dynamic> filter() {
+    double _value = 100;
+    return showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        height: MediaQuery.of(context).size.height * 0.84,
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25),
+              topRight: Radius.circular(25),
+            ),
+            color: Colors.white),
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            Container(
+              height: 5,
+              width: 40,
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: Colors.black),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: Column(
+                children: [
+                  const CustomSpacer(),
+                  Text(
+                    "Filter",
+                    style: appstyle(40, Colors.black, FontWeight.bold),
+                  ),
+                  const CustomSpacer(),
+                  Text(
+                    "Gender",
+                    style: appstyle(20, Colors.black, FontWeight.bold),
+                  ),
+                  Row(
+                    children: const [
+                      CategoryBtn(buttonClr: Colors.black, label: "Men"),
+                      CategoryBtn(buttonClr: Colors.grey, label: "Women"),
+                      CategoryBtn(buttonClr: Colors.grey, label: "Kids")
+                    ],
+                  ),
+                  Text(
+                    "Category",
+                    style: appstyle(20, Colors.black, FontWeight.w600),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: const [
+                      CategoryBtn(buttonClr: Colors.black, label: "Shoes"),
+                      CategoryBtn(buttonClr: Colors.grey, label: "Apparrels"),
+                      CategoryBtn(buttonClr: Colors.grey, label: "Accessories")
+                    ],
+                  ),
+                  const CustomSpacer(),
+                  Text(
+                    "Price",
+                    style: appstyle(20, Colors.black, FontWeight.bold),
+                  ),
+                  const CustomSpacer(),
+                  Slider(
+                    value: _value,
+                    activeColor: Colors.black,
+                    inactiveColor: Colors.grey,
+                    thumbColor: Colors.black,
+                    max: 500,
+                    divisions: 50,
+                    label: _value.toString(),
+                    onChanged: (double value) {},
+                  ),
+                  const CustomSpacer(),
+                  Text("Brand", style: appstyle(20, Colors.black, FontWeight.bold),),
+
+                  const SizedBox(
+                    height: 20,
+                  ),
+
+                  Container(
+                    padding: EdgeInsets.all(8),
+                    height: 80,
+                    child: ListView.builder(
+                      itemCount: brand.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade200,
+                              borderRadius: BorderRadius.all(Radius.circular(12))
+                            ),
+                            child: Image.asset(brand[index],
+                            height: 60,
+                            width: 80,
+                            color: Colors.black,
+                            ),
+                          ),
+                          );
+                      },),
+                  )
+                ],
               ),
             )
           ],
