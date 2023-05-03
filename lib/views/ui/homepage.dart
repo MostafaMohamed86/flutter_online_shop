@@ -3,6 +3,7 @@ import 'package:flutter_online_shop/models/sneaker_model.dart';
 import 'package:flutter_online_shop/services/helper.dart';
 import 'package:flutter_online_shop/views/shared/appstyle.dart';
 import 'package:flutter_online_shop/views/shared/home_widget.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -101,9 +102,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 child: Container(
                   padding: const EdgeInsets.only(left: 12),
                   child: TabBarView(controller: _tabController, children: [
-                    HomeWidget(male: _male),
-                    HomeWidget(male: _female),
-                    HomeWidget(male: _kids),
+                    HomeWidget(
+                      male: _male,
+                      tabIndex: 0,
+                    ),
+                    HomeWidget(
+                      male: _female,
+                      tabIndex: 1,
+                    ),
+                    HomeWidget(
+                      male: _kids,
+                      tabIndex: 2,
+                    ),
                   ]),
                 ),
               )
@@ -112,5 +122,3 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ));
   }
 }
-
-

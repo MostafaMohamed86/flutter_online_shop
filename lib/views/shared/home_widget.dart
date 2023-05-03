@@ -10,9 +10,12 @@ class HomeWidget extends StatelessWidget {
   const HomeWidget({
     Key? key,
     required Future<List<Sneakers>> male,
-  }) : _male = male, super(key: key);
+    required this.tabIndex,
+  })  : _male = male,
+        super(key: key);
 
   final Future<List<Sneakers>> _male;
+  final int tabIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +26,7 @@ class HomeWidget extends StatelessWidget {
             child: FutureBuilder<List<Sneakers>>(
               future: _male,
               builder: (context, snapshot) {
-                if (snapshot.connectionState ==
-                    ConnectionState.waiting) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
                   return Text("Error ${snapshot.error}");
@@ -49,27 +51,29 @@ class HomeWidget extends StatelessWidget {
         Column(
           children: [
             Padding(
-              padding:
-                  const EdgeInsets.fromLTRB(12, 20, 12, 20),
+              padding: const EdgeInsets.fromLTRB(12, 20, 12, 20),
               child: Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     "Latest Shoes",
-                    style: appstyle(
-                        24, Colors.black, FontWeight.bold),
+                    style: appstyle(24, Colors.black, FontWeight.bold),
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProductByCart(),));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductByCart(
+                              tabIndex: tabIndex,
+                            ),
+                          ));
                     },
                     child: Row(
                       children: [
                         Text(
                           "Show All",
-                          style: appstyle(
-                              22, Colors.black, FontWeight.w500),
+                          style: appstyle(22, Colors.black, FontWeight.w500),
                         ),
                         const Icon(
                           AntDesign.caretright,
@@ -88,8 +92,7 @@ class HomeWidget extends StatelessWidget {
             child: FutureBuilder<List<Sneakers>>(
               future: _male,
               builder: (context, snapshot) {
-                if (snapshot.connectionState ==
-                    ConnectionState.waiting) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
                   return Text("Error ${snapshot.error}");

@@ -10,7 +10,9 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
 class ProductByCart extends StatefulWidget {
-  const ProductByCart({super.key});
+  const ProductByCart({super.key, required this.tabIndex});
+
+  final int tabIndex;
 
   @override
   State<ProductByCart> createState() => _ProductByCartState();
@@ -214,12 +216,13 @@ class _ProductByCartState extends State<ProductByCart>
                     onChanged: (double value) {},
                   ),
                   const CustomSpacer(),
-                  Text("Brand", style: appstyle(20, Colors.black, FontWeight.bold),),
-
+                  Text(
+                    "Brand",
+                    style: appstyle(20, Colors.black, FontWeight.bold),
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
-
                   Container(
                     padding: EdgeInsets.all(8),
                     height: 80,
@@ -231,17 +234,19 @@ class _ProductByCartState extends State<ProductByCart>
                           padding: EdgeInsets.all(8),
                           child: Container(
                             decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              borderRadius: BorderRadius.all(Radius.circular(12))
-                            ),
-                            child: Image.asset(brand[index],
-                            height: 60,
-                            width: 80,
-                            color: Colors.black,
+                                color: Colors.grey.shade200,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12))),
+                            child: Image.asset(
+                              brand[index],
+                              height: 60,
+                              width: 80,
+                              color: Colors.black,
                             ),
                           ),
-                          );
-                      },),
+                        );
+                      },
+                    ),
                   )
                 ],
               ),
